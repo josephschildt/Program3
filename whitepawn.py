@@ -3,61 +3,65 @@ from board import Board
 from chess_utils import BoardInfo
 from chess_utils import PieceInfo
 
+
 class WhitePawn(ChessPiece):
-    
-    def __init__(self, row_num, col_num, color, label):
-      ChessPiece.__init__(self, row_num, col_num, BoardInfo.BLACK, PieceInfo.BLACK)
-      self._color = color
-      self._label = label
-      self._has_moved = False
+    def _is_within_bounds(self, row, col):
+        return 0 <= row < 9 and 0 <= col < 8
+
+    def _is_empty_square(self, row, col, board):
+        return board._board_info[row][col] is None
+
+    def _is_capturable_piece(self, row, col, board):
+        target_piece = board._board_info[row][col]
+        return target_piece is not None and target_piece.get_color() == BoardInfo.BLACK
 
     def is_legal_move(self, dest_row, dest_col, board):
-      row_diff = abs(self._row - dest_row)
-      col_diff = abs(self._col - dest_col)
-      square_type = board.get_square_info(dest_row, dest_col)
-    
-      #need logic here to check if it is the first move by that pawn, allowing them to move 2 spaces instead of 1 forward
-      # is_legal = ((row_diff > 0 and col_diff == 0) or (row_diff == 0 and col_diff > 0)) and square_type != self._color and square_type != BoardInfo.OFF_THE_BOARD
-      if self._has_moved:
-         return row_diff == -1 or col_diff == 0 and square_type != self._color and square_type != BoardInfo.OFF_THE_BOARD
-      else: 
-         return (row_diff == -1 or row_diff == -2) and col_diff == 0 and square_type != self._color and square_type != BoardInfo.OFF_THE_BOARD
-  
+        if dest_row == self._row and dest_col == self._col:
+            return True
+
+        if not self._is_within_bounds(dest_row, dest_col):
+            return False
+
+        # Forward one square
+        if dest_col == self._col and dest_row == self._row + 1:
+            return self._is_empty_square(dest_row, dest_col, board)
+
+        # Initial two square advance
+        if self._row == 1 and dest_col == self._col and dest_row == self._row + 2:
+            return (self._is_empty_square(self._row + 1, self._col, board) and
+                    self._is_empty_square(dest_row, dest_col, board))
+
+        # Diagonal capture
+        if abs(dest_col - self._col) == 1 and dest_row == self._row + 1:
+            return self._is_capturable_piece(dest_row, dest_col, board)
+
+        return False
+
     def generate_legal_moves(self, board_data, board):
-       
-      char_label = self._label.value
-      board_data[self._row][self._col] = char_label
+        char_label = self._label.value
 
-      #up up2 diag-left diag-right
-      directions = [
-        (-1, 0),
-        (-2, 0) if not self._has_moved else None,
-        (-1, -1),
-        (-1, 1)
-      ]
+        # Staying in the same position
+        if self._is_within_bounds(self._row, self._col):
+            board_data[self._row][self._col] = char_label
 
-      for row_direction, col_direction in directions:
-        if row_direction == None:
-           continue
-        
-        new_row = self._row + row_direction
-        new_col = self._col + col_direction
+        # Forward one square
+        new_row = self._row + 1
+        if (self._is_within_bounds(new_row, self._col) and
+                self._is_empty_square(new_row, self._col, board)):
+            board_data[new_row][self._col] = char_label
 
-      
-            
-            # Check if we are off the board
-        if new_row < 0 or new_row >= 8 or new_col < 0 or new_col >= 8:
-                continue  # Stop if it's off the board
-            
-        square_type = board.get_square_info(new_row, new_col)
+        # Initial two square advance
+        if (self._row == 1 and
+            self._is_within_bounds(self._row + 2, self._col) and
+            self._is_empty_square(self._row + 1, self._col, board) and
+                self._is_empty_square(self._row + 2, self._col, board)):
+            board_data[self._row + 2][self._col] = char_label
 
-            # If we hit any piece (friend or enemy)
-        if square_type != BoardInfo.EMPTY:
-                if square_type != self._color:  # If it's an enemy piece, it's a legal move
-                    board_data[new_row][new_col] = char_label  # Mark the legal move
-                continue  # Stop if we hit any piece (friend or enemy)
-        else:
-                board_data[new_row][new_col] = char_label  # Mark the empty square as a legal move
+        # Diagonal captures
+        for new_col in [self._col - 1, self._col + 1]:
+            new_row = self._row + 1
+            if (self._is_within_bounds(new_row, new_col) and
+                    self._is_capturable_piece(new_row, new_col, board)):
+                board_data[new_row][new_col] = char_label
 
-      self._has_moved = True
-      return board_data
+        return board_data
