@@ -8,11 +8,7 @@ from chess_utils import PieceInfo
 from chess_piece import ChessPiece
 from mec_pieces import BlackPiece
 from mec_pieces import King
-from knight import Knight # imported the peices, in order to create them
-from rook import Rook
-from whitepawn import WhitePawn
-from bishop import Bishop
-from queen import Queen
+from my_pieces import Knight, Rook, WhitePawn, Bishop, Queen
 import sys
 
 
