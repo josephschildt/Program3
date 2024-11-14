@@ -50,7 +50,7 @@ __B___B_
 ________
 
 Can move from (3,3) to (6,0)
-Can move from (3,3) to (6,6)
+Move from (3,3) to (6,6) is not possible
 Moved from (3,3) to (6,0)
 New board state: 
 ___K____
