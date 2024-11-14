@@ -3,8 +3,9 @@ from board import Board
 from chess_utils import BoardInfo
 from chess_utils import PieceInfo
 
+
 class Knight(ChessPiece):
-    
+
     def _get_knight_moves(self):
         """Returns all possible knight move patterns."""
         return [
@@ -22,10 +23,6 @@ class Knight(ChessPiece):
         """Checks if the destination square is valid (not off board or same color)."""
         square_type = board.get_square_info(dest_row, dest_col)
         return square_type != self._color and square_type != BoardInfo.OFF_THE_BOARD
-
-    def _is_within_board(self, row, col):
-        """Checks if the given position is within the board boundaries."""
-        return 0 <= row < 8 and 0 <= col < 8
 
     def is_legal_move(self, dest_row, dest_col, board):
         """Determines if a move to the destination square is legal."""
@@ -49,12 +46,12 @@ class Knight(ChessPiece):
         for direction in self._get_knight_moves():
             new_row, new_col = self._calculate_new_position(direction)
 
-            if (self._is_within_board(new_row, new_col) and
+            if (super()._is_within_board(new_row, new_col) and
                     self._is_valid_destination(new_row, new_col, board)):
                 board_data[new_row][new_col] = self._label.value
 
         return board_data
-    
+
 
 class Rook(ChessPiece):
 
@@ -146,7 +143,6 @@ class Rook(ChessPiece):
         return board_data
 
 
-
 class WhitePawn(ChessPiece):
     def _is_within_bounds(self, row, col):
         return 0 <= row < 9 and 0 <= col < 8
@@ -211,7 +207,7 @@ class WhitePawn(ChessPiece):
 
 
 class Bishop(ChessPiece):
-   
+
     def is_legal_move(self, dest_row, dest_col, board):
         """Check if the bishop's move to the destination square is legal."""
         if not self._is_valid_starting_position(dest_row, dest_col):
@@ -284,7 +280,7 @@ class Bishop(ChessPiece):
             new_row += row_direction
             new_col += col_direction
 
-            if not self._is_within_board(new_row, new_col):
+            if not super()._is_within_board(new_row, new_col):
                 break
 
             square_type = board.get_square_info(new_row, new_col)
@@ -296,19 +292,15 @@ class Bishop(ChessPiece):
 
             board_data[new_row][new_col] = self._label.value
 
-    def _is_within_board(self, row, col):
-        """Check if the given position is within the board boundaries."""
-        return 0 <= row < 8 and 0 <= col < 8
-
 
 class Queen(ChessPiece):
 
+    # Allows for piece to stay in the same position.
     def _is_same_position(self, dest_row, dest_col):
-        """Check if the destination is the same as current position."""
         return dest_row == self._row and dest_col == self._col
 
+    # Checks if the move is vertical, horizontal, or diagonal
     def _is_valid_direction(self, dest_row, dest_col):
-        """Check if move is either straight or diagonal."""
         is_straight = self._row == dest_row or self._col == dest_col
         is_diagonal = abs(self._row - dest_row) == abs(self._col - dest_col)
         return is_straight or is_diagonal
@@ -321,8 +313,8 @@ class Queen(ChessPiece):
             1 if dest_col > self._col else -1)
         return row_step, col_step
 
+    # checks to see if there is a clear path, and if not will return false.
     def _is_path_clear(self, dest_row, dest_col, board):
-        """Check if there are any pieces blocking the path."""
         row_step, col_step = self._get_direction_steps(dest_row, dest_col)
         current_row, current_col = self._row + row_step, self._col + col_step
 
@@ -351,10 +343,6 @@ class Queen(ChessPiece):
             (1, 1)     # bottom-right
         ]
 
-    def _is_within_board(self, row, col):
-        """Check if position is within board boundaries."""
-        return 0 <= row < 8 and 0 <= col < 8
-
     def is_legal_move(self, dest_row, dest_col, board):
         # If same position, move is legal (no movement)
         if self._is_same_position(dest_row, dest_col):
@@ -380,7 +368,7 @@ class Queen(ChessPiece):
                 new_row += row_direction
                 new_col += col_direction
 
-                if not self._is_within_board(new_row, new_col):
+                if not super()._is_within_board(new_row, new_col):
                     break
 
                 square_type = board.get_square_info(new_row, new_col)
