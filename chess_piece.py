@@ -28,3 +28,7 @@ class ChessPiece:
 
     def _is_within_board(self, row, col):
         return 0 <= row < 8 and 0 <= col < 8
+
+    # Allows for piece to stay in the same position.
+    def _is_same_position(self, dest_row, dest_col):
+        return dest_row == self._row and dest_col == self._col
