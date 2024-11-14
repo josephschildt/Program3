@@ -4,11 +4,7 @@ from chess_utils import BoardInfo
 from chess_utils import PieceInfo
 
 class Knight(ChessPiece):
-    def __init__(self, row_num, col_num, color, label):
-        super().__init__(row_num, col_num, color, label)
-        self._color = color
-        self._label = label
-
+    
     def _get_knight_moves(self):
         """Returns all possible knight move patterns."""
         return [
@@ -61,11 +57,6 @@ class Knight(ChessPiece):
     
 
 class Rook(ChessPiece):
-    def __init__(self, row_num, col_num, color, label):
-        ChessPiece.__init__(self, row_num, col_num,
-                            BoardInfo.BLACK, PieceInfo.BLACK)
-        self._color = color
-        self._label = label
 
     def _is_same_position(self, dest_row, dest_col):
         """Check if the destination is the same as current position."""
@@ -220,12 +211,7 @@ class WhitePawn(ChessPiece):
 
 
 class Bishop(ChessPiece):
-    def __init__(self, row_num, col_num, color, label):
-        ChessPiece.__init__(self, row_num, col_num,
-                            BoardInfo.BLACK, PieceInfo.BLACK)
-        self._color = color
-        self._label = label
-
+   
     def is_legal_move(self, dest_row, dest_col, board):
         """Check if the bishop's move to the destination square is legal."""
         if not self._is_valid_starting_position(dest_row, dest_col):
@@ -316,11 +302,6 @@ class Bishop(ChessPiece):
 
 
 class Queen(ChessPiece):
-    def __init__(self, row_num, col_num, color, label):
-        ChessPiece.__init__(self, row_num, col_num,
-                            BoardInfo.BLACK, PieceInfo.BLACK)
-        self._color = color
-        self._label = label
 
     def _is_same_position(self, dest_row, dest_col):
         """Check if the destination is the same as current position."""
