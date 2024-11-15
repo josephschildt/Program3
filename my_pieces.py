@@ -1,3 +1,5 @@
+# Joseph Schildt and Daulton Widlacki, Program 3, IT 327 001
+
 from chess_piece import ChessPiece
 from board import Board
 from chess_utils import BoardInfo

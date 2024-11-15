@@ -1,3 +1,5 @@
+# Joseph Schildt and Daulton Widlacki, Program 3, IT 327 001
+
 # program to handle checking chess moves
 # Mary Elaine Califf
 # 10/22/2021
