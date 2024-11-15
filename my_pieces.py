@@ -74,7 +74,10 @@ class Rook(ChessPiece):
     def _get_direction(self, dest_pos, current_pos):
         if dest_pos == current_pos:
             return 0
-        return 1 if dest_pos > current_pos else -1
+        elif dest_pos > current_pos:
+            return 1
+        else:
+            return -1
 
      # Checks is the destination square is valid (Either off the board or the same color)
 
@@ -269,8 +272,15 @@ class Bishop(ChessPiece):
 
     def _is_path_clear(self, dest_row, dest_col, board):
 
-        row_step = 1 if dest_row > self._row else -1
-        col_step = 1 if dest_col > self._col else -1
+        if dest_row > self._row:
+            row_step = 1
+        else:
+            row_step = -1
+    
+        if dest_col > self._col:
+            col_step = 1
+        else:
+            col_step = -1
 
         curr_row = self._row + row_step
         curr_col = self._col + col_step
