@@ -27,13 +27,11 @@ class Knight(ChessPiece):
         return (row_diff == 2 and col_diff == 1) or (row_diff == 1 and col_diff == 2)
 
     # Checks is the destination square is valid (Either off the board or the same color)
-
     def _is_valid_destination(self, dest_row, dest_col, board):
         square_type = board.get_square_info(dest_row, dest_col)
         return square_type != self._color and square_type != BoardInfo.OFF_THE_BOARD
 
     # Checks to see if the move is able to be made to the destination square
-
     def is_legal_move(self, dest_row, dest_col, board):
 
         row_diff = abs(self._row - dest_row)
@@ -67,7 +65,6 @@ class Rook(ChessPiece):
         return (row_diff > 0 and col_diff == 0) or (row_diff == 0 and col_diff > 0)
 
     # Returns the direction of the movement (moving up, down, or not moving)
-
     def _get_direction(self, dest_pos, current_pos):
         if dest_pos == current_pos:
             return 0
@@ -77,12 +74,10 @@ class Rook(ChessPiece):
             return -1
 
      # Checks is the destination square is valid (Either off the board or the same color)
-
     def _is_valid_destination(self, square_type):
         return square_type != self._color and square_type != BoardInfo.OFF_THE_BOARD
 
     # Finds if there are any pieces along the path to the destination
-
     def _is_path_clear(self, dest_row, dest_col, board):
 
         row_direction = self._get_direction(dest_row, self._row)
@@ -99,7 +94,6 @@ class Rook(ChessPiece):
         return True
 
     # Checks to see if the move is able to be made to the destination square
-
     def is_legal_move(self, dest_row, dest_col, board):
         # Check if staying in place
         if super()._is_same_position(dest_row, dest_col):
@@ -140,7 +134,6 @@ class Rook(ChessPiece):
         return board_data
 
     # Generates legal moves for the piece
-
     def generate_legal_moves(self, board_data, board):
 
         board_data[self._row][self._col] = self._label.value
@@ -177,7 +170,6 @@ class WhitePawn(ChessPiece):
         return target_piece is not None and target_piece.get_color() == BoardInfo.BLACK
 
     # Determines is the move is able to be made
-
     def is_legal_move(self, dest_row, dest_col, board):
         if dest_row == self._row and dest_col == self._col:
             return True
@@ -252,21 +244,18 @@ class Bishop(ChessPiece):
         return not (dest_row == self._row and dest_col == self._col)
 
     # Detemines is the move is diagonal
-
     def _is_valid_diagonal_move(self, dest_row, dest_col):
         row_diff = abs(self._row - dest_row)
         col_diff = abs(self._col - dest_col)
         return row_diff == col_diff
 
     # Checks if the destination square is a valid move
-
     def _is_valid_destination(self, dest_row, dest_col, board):
         square_type = board.get_square_info(dest_row, dest_col)
         return (square_type != self._color and
                 square_type != BoardInfo.OFF_THE_BOARD)
 
     # Checks diagonal paths to the destination location to see if there are pieces along the path
-
     def _is_path_clear(self, dest_row, dest_col, board):
 
         if dest_row > self._row:
