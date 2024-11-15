@@ -30,11 +30,6 @@ class Knight(ChessPiece):
         square_type = board.get_square_info(dest_row, dest_col)
         return square_type != self._color and square_type != BoardInfo.OFF_THE_BOARD
 
-    # Ensures the piece is within the board
-
-    def _is_within_board(self, row, col):
-        return 0 <= row < 8 and 0 <= col < 8
-
     # Checks to see if the move is able to be made to the destination square
 
     def is_legal_move(self, dest_row, dest_col, board):
@@ -58,7 +53,7 @@ class Knight(ChessPiece):
         for direction in self._get_knight_moves():
             new_row, new_col = self._calculate_new_position(direction)
 
-            if (self._is_within_board(new_row, new_col) and
+            if (super()._is_within_board(new_row, new_col) and
                     self._is_valid_destination(new_row, new_col, board)):
                 board_data[new_row][new_col] = self._label.value
 
@@ -276,7 +271,7 @@ class Bishop(ChessPiece):
             row_step = 1
         else:
             row_step = -1
-    
+
         if dest_col > self._col:
             col_step = 1
         else:
