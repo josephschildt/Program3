@@ -154,15 +154,15 @@ class Rook(ChessPiece):
 
 class WhitePawn(ChessPiece):
     # Checks if the square is empty
-
     def _is_empty_square(self, row, col, board):
         return board._board_info[row][col] is None
 
-    # Checks if the piece is able to be captured
 
+    # Checks if the piece is able to be captured
     def _is_capturable_piece(self, row, col, board):
         target_piece = board._board_info[row][col]
         return target_piece is not None and target_piece.get_color() == BoardInfo.BLACK
+
 
     # Determines is the move is able to be made
     def is_legal_move(self, dest_row, dest_col, board):
@@ -323,7 +323,7 @@ class Queen(ChessPiece):
         is_diagonal = abs(self._row - dest_row) == abs(self._col - dest_col)
         return is_straight or is_diagonal
 
-    # Increment to keep track of each step taken.
+    # Increment to keep track of each step taken
     def _get_direction_steps(self, dest_row, dest_col):
         # Determine vertical step direction: no movement, down, or up
         if self._row == dest_row:
