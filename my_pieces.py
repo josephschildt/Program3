@@ -321,7 +321,7 @@ class Bishop(ChessPiece):
             new_row += row_direction
             new_col += col_direction
 
-            if not self._is_within_board(new_row, new_col):
+            if not super()._is_within_board(new_row, new_col):
                 break
 
             square_type = board.get_square_info(new_row, new_col)
@@ -332,10 +332,6 @@ class Bishop(ChessPiece):
                 break
 
             board_data[new_row][new_col] = self._label.value
-
-    # Ensures the piece is within the board
-    def _is_within_board(self, row, col):
-        return 0 <= row < 8 and 0 <= col < 8
 
 
 class Queen(ChessPiece):
