@@ -153,11 +153,6 @@ class Rook(ChessPiece):
 
 
 class WhitePawn(ChessPiece):
-
-    # Ensures the piece is within the board
-    def _is_within_bounds(self, row, col):
-        return 0 <= row < 8 and 0 <= col < 8
-
     # Checks if the square is empty
 
     def _is_empty_square(self, row, col, board):
@@ -174,7 +169,7 @@ class WhitePawn(ChessPiece):
         if dest_row == self._row and dest_col == self._col:
             return True
 
-        if not self._is_within_bounds(dest_row, dest_col):
+        if not super()._is_within_board(dest_row, dest_col):
             return False
 
         # One square movement
@@ -197,18 +192,18 @@ class WhitePawn(ChessPiece):
         char_label = self._label.value
 
         # Staying in the same position
-        if self._is_within_bounds(self._row, self._col):
+        if super()._is_within_board(self._row, self._col):
             board_data[self._row][self._col] = char_label
 
         # Forward one square
         new_row = self._row + 1
-        if (self._is_within_bounds(new_row, self._col) and
+        if (super()._is_within_board(new_row, self._col) and
                 self._is_empty_square(new_row, self._col, board)):
             board_data[new_row][self._col] = char_label
 
         # Two square movement
         if (self._row == 1 and
-            self._is_within_bounds(self._row + 2, self._col) and
+            super()._is_within_board(self._row + 2, self._col) and
             self._is_empty_square(self._row + 1, self._col, board) and
                 self._is_empty_square(self._row + 2, self._col, board)):
             board_data[self._row + 2][self._col] = char_label
@@ -216,7 +211,7 @@ class WhitePawn(ChessPiece):
         # Capturing diagonal pieces
         for new_col in [self._col - 1, self._col + 1]:
             new_row = self._row + 1
-            if (self._is_within_bounds(new_row, new_col) and
+            if (super()._is_within_board(new_row, new_col) and
                     self._is_capturable_piece(new_row, new_col, board)):
                 board_data[new_row][new_col] = char_label
 
